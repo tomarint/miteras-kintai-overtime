@@ -6,6 +6,13 @@
   "author": "tomarin <tomarint@gmail.com>",
   "license": "MIT",
   "description": "This is a chrome extension that shows accumulated overtime hours in MiTERAS KINTAI.",
+  "scripts": {
+    "build": "webpack --mode=production --node-env=production",
+    "build:dev": "webpack --mode=development",
+    "build:prod": "webpack --mode=production --node-env=production",
+    "watch": "webpack --watch",
+    "clean": "rm -rf ./dist/ && mkdir ./dist"
+  },
   "devDependencies": {
     "@types/chrome": "^0.0.203",
     "@webpack-cli/generators": "^3.0.1",
