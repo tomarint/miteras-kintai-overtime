@@ -26,6 +26,7 @@
   }
   // Show cumulative overtime hours
   function showCumulativeOvertimeHours() {
+    // console.log("location.href:", location.href);
     if (!location.href.endsWith("/work-condition")) {
       return;
     }
@@ -44,8 +45,8 @@
     if (overtime == null) {
       return;
     }
-    if (overtime.textContent != "残業") {
-      console.log("overtime:", overtime);
+    if (overtime.textContent !== "残業") {
+      console.log("overtime.textContent:", overtime.textContent);
       console.log("Unknown overtime format.")
       return;
     }
