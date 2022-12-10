@@ -1,7 +1,7 @@
 (function () {
   'use strict';
   function isNumeric(c: string): boolean {
-    return c >= '0' && c <= '9';
+    return '0' <= c && c <= '9';
   }
   function parse_hhmm(s: string): number {
     if (s.length != 5 || s[2] != ':') {
