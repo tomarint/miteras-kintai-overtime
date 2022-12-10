@@ -24,12 +24,50 @@
     const h = (minute - m) / 60;
     return `${sign}${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
   }
+  function getColumnsOfTable(): { [name: string]: number } | null {
+    const head_tr = document.querySelector("#monthly-view-attendance-content > table > tbody > tr");
+    if (head_tr == null) {
+      return null;
+    }
+    const head_ths = head_tr.querySelectorAll("th");
+    if (head_ths == null) {
+      return null;
+    }
+    const ret: { [name: string]: number } = {};
+    head_ths.forEach((th, i) => {
+      const overtime = th.querySelector("div > span");
+      if (overtime != null) {
+        let column_name = overtime.textContent;
+        if (column_name != null) {
+          ret[column_name] = i;
+        }
+      }
+    });
+    return ret;
+  }
   // Show cumulative overtime hours
   function showCumulativeOvertimeHours() {
     // console.log("location.href:", location.href);
     if (!location.href.endsWith("/work-condition")) {
       return;
     }
+    let columns_of_table = getColumnsOfTable();
+    if (columns_of_table == null) {
+      return;
+    }
+    const overtime_column = columns_of_table["残業"];
+    const worktype_column = columns_of_table["種別"];
+    const worktime_column = columns_of_table["勤務合計"];
+    if ((overtime_column != null)
+    &&  (worktype_column != null)
+    &&  (worktime_column != null)) {
+      // console.log("columns_of_table:", columns_of_table);
+    } else {
+      console.log("Unknown overtime format.")
+      console.log("columns_of_table:", columns_of_table);
+      return;
+    }
+
     //
     // Add the header of the table
     //
@@ -37,17 +75,8 @@
     if (head_tr == null) {
       return;
     }
-    const head_th = head_tr.querySelector("th:nth-child(13)");
+    const head_th = head_tr.querySelector(`th:nth-child(${overtime_column + 1})`);
     if (head_th == null) {
-      return;
-    }
-    const overtime = head_th.querySelector("div > span");
-    if (overtime == null) {
-      return;
-    }
-    if (overtime.textContent !== "残業") {
-      console.log("overtime.textContent:", overtime.textContent);
-      console.log("Unknown overtime format.")
       return;
     }
     //
@@ -68,25 +97,39 @@
     if (tbody == null) {
       return;
     }
-    const trs = tbody.querySelectorAll("tr");
-    if (trs == null) {
+    const body_trs = tbody.querySelectorAll("tr");
+    if (body_trs == null) {
       return;
     }
+
+
+    //
+    // Add a new column of the body of the table
+    //
     let cum_min = 0;
-    trs.forEach(tr => {
+    body_trs.forEach(body_tr => {
+      const body_tds = body_tr.querySelectorAll("td");
+      if (body_tds == null) {
+        return null;
+      }
+      // for (let i = 0; i < body_tds.length; i++) {
+      //   console.log(i, body_tds[i]);
+      // }
       const new_td = document.createElement("td");
       new_td.className = "table01__cell--time";
 
       // 種別
-      let text = tr.querySelector("td.table01__cell--cate > div")?.textContent;
+      let text = body_tds[worktype_column].querySelector("div")?.textContent;
       if (text == null) {
+        console.log("Unknown worktype format.");
         return;
       }
       const worktype = text.trim();
 
       // 勤務合計
-      text = tr.querySelector("td:nth-child(16)")?.textContent;
+      text = body_tds[worktime_column]?.textContent;
       if (text == null) {
+        console.log("Unknown worktime format.");
         return;
       }
       const worktime_min = parse_hhmm(text);
@@ -112,7 +155,7 @@
         new_td.innerText = cum_str;
       }
       // console.log("worktype:", worktype, "worktime_min:", worktime_min, "overtime_min:", overtime_min, "cum_min:", cum_min)
-      tr.appendChild(new_td);
+      body_tr.appendChild(new_td);
     });
   }
   showCumulativeOvertimeHours();
