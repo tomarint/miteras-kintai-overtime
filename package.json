@@ -14,15 +14,15 @@
     "clean": "rm -rf ./dist/ && mkdir ./dist"
   },
   "devDependencies": {
-    "@types/chrome": "^0.0.224",
-    "@webpack-cli/generators": "^3.0.1",
+    "@types/chrome": "^0.0.241",
+    "@webpack-cli/generators": "^3.0.7",
     "copy-webpack-plugin": "^11.0.0",
-    "css-minimizer-webpack-plugin": "^4.2.2",
-    "html-minimizer-webpack-plugin": "^4.3.0",
-    "terser-webpack-plugin": "^5.3.7",
-    "ts-loader": "^9.4.2",
-    "typescript": "^5.0.2",
-    "webpack": "^5.76.2",
-    "webpack-cli": "^5.0.1"
+    "css-minimizer-webpack-plugin": "^5.0.1",
+    "html-minimizer-webpack-plugin": "^4.4.0",
+    "terser-webpack-plugin": "^5.3.9",
+    "ts-loader": "^9.4.4",
+    "typescript": "^5.1.6",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
   }
 }
