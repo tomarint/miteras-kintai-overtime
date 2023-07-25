@@ -16,6 +16,7 @@
   }
   function hhmm(minute: number): string {
     let sign = '';
+    minute = Math.round(minute);
     if (minute < 0) {
       minute = -minute;
       sign = '-';
@@ -106,7 +107,9 @@
     //
     // Add a new column of the body of the table
     //
-    let cum_min = 0;
+    let cum_est_overtime_min = 0;
+    let cum_act_overtime_min = 0;
+    let cum_act_overtime_day = 0;
     body_trs.forEach(body_tr => {
       const body_tds = body_tr.querySelectorAll("td");
       if (body_tds == null) {
@@ -133,10 +136,14 @@
         return;
       }
       const worktime_min = parse_hhmm(text);
+
       let overtime_min = 0;
       if (worktime_min === 0) {
         if (worktype === "全休(代休)") {
           overtime_min = -8 * 60;
+          cum_est_overtime_min += overtime_min;
+          cum_act_overtime_min += overtime_min;
+          cum_act_overtime_day += 1;
         }
       }
       else {
@@ -149,16 +156,24 @@
         } else {
           overtime_min = worktime_min - 8 * 60;
         }
+        cum_est_overtime_min += overtime_min;
+        cum_act_overtime_min += overtime_min;
+        cum_act_overtime_day += 1;
       }
 
-      if (worktime_min === 0 && overtime_min === 0) {
-        new_td.innerText = "-";
+      let cum_str = "-";
+      if (worktime_min === 0) {
+        if (worktype === "通常出勤") {
+          if (cum_act_overtime_day > 0) {
+            cum_est_overtime_min += cum_act_overtime_min / cum_act_overtime_day;
+            cum_str = "(" + hhmm(cum_est_overtime_min) + ")";
+          }
+        }
       } else {
-        cum_min += overtime_min;
-        const cum_str = hhmm(cum_min);
-        new_td.innerText = cum_str;
+        cum_str = hhmm(cum_est_overtime_min);
       }
-      // console.log("worktype:", worktype, "worktime_min:", worktime_min, "overtime_min:", overtime_min, "cum_min:", cum_min)
+      new_td.innerText = cum_str;
+      // console.log("worktype:", worktype, "worktime_min:", worktime_min, "overtime_min:", overtime_min, "cum_overtime_min:", cum_overtime_min)
       body_tr.appendChild(new_td);
     });
   }
