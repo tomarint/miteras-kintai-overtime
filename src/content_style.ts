@@ -137,13 +137,23 @@
       }
       const worktime_min = parse_hhmm(text);
 
+      let cum_str = "-";
       let overtime_min = 0;
       if (worktime_min === 0) {
-        if (worktype === "全休(代休)") {
+        if ((worktype === "通常出勤")
+        ||  (worktype === "午前半休(AM：年次有給休暇)")
+        ||  (worktype === "午後半休(PM：年次有給休暇)")) {
+          if (cum_act_overtime_day > 0) {
+            cum_est_overtime_min += cum_act_overtime_min / cum_act_overtime_day;
+            cum_str = "(" + hhmm(cum_est_overtime_min) + ")";
+          }
+        }
+        else if (worktype === "全休(代休)") {
           overtime_min = -8 * 60;
           cum_est_overtime_min += overtime_min;
           cum_act_overtime_min += overtime_min;
           cum_act_overtime_day += 1;
+          cum_str = hhmm(cum_est_overtime_min);
         }
       }
       else {
@@ -159,19 +169,9 @@
         cum_est_overtime_min += overtime_min;
         cum_act_overtime_min += overtime_min;
         cum_act_overtime_day += 1;
-      }
-
-      let cum_str = "-";
-      if (worktime_min === 0) {
-        if (worktype === "通常出勤") {
-          if (cum_act_overtime_day > 0) {
-            cum_est_overtime_min += cum_act_overtime_min / cum_act_overtime_day;
-            cum_str = "(" + hhmm(cum_est_overtime_min) + ")";
-          }
-        }
-      } else {
         cum_str = hhmm(cum_est_overtime_min);
       }
+
       new_td.innerText = cum_str;
       // console.log("worktype:", worktype, "worktime_min:", worktime_min, "overtime_min:", overtime_min, "cum_overtime_min:", cum_overtime_min)
       body_tr.appendChild(new_td);
