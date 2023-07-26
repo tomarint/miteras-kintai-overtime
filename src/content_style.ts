@@ -1,13 +1,18 @@
 (function () {
-  'use strict';
+  "use strict";
   function isNumeric(c: string): boolean {
-    return '0' <= c && c <= '9';
+    return "0" <= c && c <= "9";
   }
   function parse_hhmm(s: string): number {
-    if (s.length != 5 || s[2] != ':') {
+    if (s.length != 5 || s[2] != ":") {
       return 0;
     }
-    if (!isNumeric(s[0]) || !isNumeric(s[1]) || !isNumeric(s[3]) || !isNumeric(s[4])) {
+    if (
+      !isNumeric(s[0]) ||
+      !isNumeric(s[1]) ||
+      !isNumeric(s[3]) ||
+      !isNumeric(s[4])
+    ) {
       return 0;
     }
     const hour = parseInt(s[0]) * 10 + parseInt(s[1]);
@@ -15,18 +20,22 @@
     return hour * 60 + min;
   }
   function hhmm(minute: number): string {
-    let sign = '';
+    let sign = "";
     minute = Math.round(minute);
     if (minute < 0) {
       minute = -minute;
-      sign = '-';
+      sign = "-";
     }
     const m = minute % 60;
     const h = (minute - m) / 60;
-    return `${sign}${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
+    const mstr = m.toString().padStart(2, "0");
+    const hstr = h.toString().padStart(2, "0");
+    return `${sign}${hstr}:${mstr}`;
   }
   function getColumnsOfTable(): { [name: string]: number } | null {
-    const head_tr = document.querySelector("#monthly-view-attendance-content > table > tbody > tr");
+    const head_tr = document.querySelector(
+      "#monthly-view-attendance-content > table > tbody > tr"
+    );
     if (head_tr == null) {
       return null;
     }
@@ -59,12 +68,14 @@
     const overtime_column = columns_of_table["残業"];
     const worktype_column = columns_of_table["種別"];
     const worktime_column = columns_of_table["勤務合計"];
-    if ((overtime_column != null)
-    &&  (worktype_column != null)
-    &&  (worktime_column != null)) {
+    if (
+      overtime_column != null &&
+      worktype_column != null &&
+      worktime_column != null
+    ) {
       // console.log("columns_of_table:", columns_of_table);
     } else {
-      console.log("Unknown overtime format.")
+      console.log("Unknown overtime format.");
       console.log("columns_of_table:", columns_of_table);
       return;
     }
@@ -72,11 +83,15 @@
     //
     // Add the header of the table
     //
-    const head_tr = document.querySelector("#monthly-view-attendance-content > table > tbody > tr");
+    const head_tr = document.querySelector(
+      "#monthly-view-attendance-content > table > tbody > tr"
+    );
     if (head_tr == null) {
       return;
     }
-    const head_th = head_tr.querySelector(`th:nth-child(${overtime_column + 1})`);
+    const head_th = head_tr.querySelector(
+      `th:nth-child(${overtime_column + 1})`
+    );
     if (head_th == null) {
       return;
     }
@@ -94,7 +109,9 @@
     //
     // Add a new column of the body of the table
     //
-    const tbody = document.querySelector("#attendance-table-body > table > tbody");
+    const tbody = document.querySelector(
+      "#attendance-table-body > table > tbody"
+    );
     if (tbody == null) {
       return;
     }
@@ -103,14 +120,13 @@
       return;
     }
 
-
     //
     // Add a new column of the body of the table
     //
     let cum_est_overtime_min = 0;
     let cum_act_overtime_min = 0;
     let cum_act_overtime_day = 0;
-    body_trs.forEach(body_tr => {
+    body_trs.forEach((body_tr) => {
       const body_tds = body_tr.querySelectorAll("td");
       if (body_tds == null) {
         return null;
@@ -140,23 +156,23 @@
       let cum_str = "-";
       let overtime_min = 0;
       if (worktime_min === 0) {
-        if ((worktype === "通常出勤")
-        ||  (worktype === "午前半休(AM：年次有給休暇)")
-        ||  (worktype === "午後半休(PM：年次有給休暇)")) {
+        if (
+          worktype === "通常出勤" ||
+          worktype === "午前半休(AM：年次有給休暇)" ||
+          worktype === "午後半休(PM：年次有給休暇)"
+        ) {
           if (cum_act_overtime_day > 0) {
             cum_est_overtime_min += cum_act_overtime_min / cum_act_overtime_day;
             cum_str = "(" + hhmm(cum_est_overtime_min) + ")";
           }
-        }
-        else if (worktype === "全休(代休)") {
+        } else if (worktype === "全休(代休)") {
           overtime_min = -8 * 60;
           cum_est_overtime_min += overtime_min;
           cum_act_overtime_min += overtime_min;
           cum_act_overtime_day += 1;
           cum_str = hhmm(cum_est_overtime_min);
         }
-      }
-      else {
+      } else {
         if (worktype === "所定休日出勤") {
           overtime_min = worktime_min;
         } else if (worktype === "午前半休(AM：年次有給休暇)") {
