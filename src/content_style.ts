@@ -80,6 +80,13 @@
       return;
     }
 
+    const cum_overtime_column = columns_of_table["累計残業"];
+    if (cum_overtime_column != null) {
+      console.log("Already added.");
+      console.log("columns_of_table:", columns_of_table);
+      return;
+    }
+
     //
     // Add the header of the table
     //
