@@ -56,7 +56,7 @@
     return ret;
   }
   // Show cumulative overtime hours
-  function showCumulativeOvertimeHours() {
+  function showCumulativeOvertimeHours(estimateOvertime: boolean) {
     // console.log("location.href:", location.href);
     if (!location.href.endsWith("/work-condition")) {
       return;
@@ -167,9 +167,11 @@
           worktype === "午前半休(AM：年次有給休暇)" ||
           worktype === "午後半休(PM：年次有給休暇)"
         ) {
-          if (cum_act_overtime_day > 0) {
-            cum_est_overtime_min += cum_act_overtime_min / cum_act_overtime_day;
-            cum_str = "(" + hhmm(cum_est_overtime_min) + ")";
+          if (estimateOvertime) {
+            if (cum_act_overtime_day > 0) {
+              cum_est_overtime_min += cum_act_overtime_min / cum_act_overtime_day;
+              cum_str = "(" + hhmm(cum_est_overtime_min) + ")";
+            }
           }
         } else if (worktype === "全休(代休)") {
           cum_est_overtime_min -= 8 * 60;
@@ -201,5 +203,13 @@
       body_tr.appendChild(new_td);
     });
   }
-  showCumulativeOvertimeHours();
+
+  chrome.storage.sync.get(
+    {
+      estimateOvertime: "1",
+    },
+    function (values) {
+      showCumulativeOvertimeHours(values.estimateOvertime === "1");
+    }
+  );
 })();

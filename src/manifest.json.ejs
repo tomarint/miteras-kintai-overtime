@@ -37,5 +37,16 @@
         "content_style.js"
       ]
     }
+  ],
+<% if (browser === 'firefox') { -%>
+  "options_ui": {
+    "page": "options.html",
+    "browser_style": false
+  },
+<% } else { -%>
+  "options_page": "options.html",
+<% } -%>
+  "permissions": [
+    "storage"
   ]
 }
