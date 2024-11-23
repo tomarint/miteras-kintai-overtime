@@ -40,17 +40,17 @@
         "https://kintai.miteras.jp/*/work-condition"
       ],
       "js": [
-        "content_style.js"
+        "content_style/content_style.js"
       ]
     }
   ],
 <% if (browser === 'firefox') { -%>
   "options_ui": {
-    "page": "options.html",
+    "page": "options/options.html",
     "browser_style": false
   },
 <% } else { -%>
-  "options_page": "options.html",
+  "options_page": "options/options.html",
 <% } -%>
   "permissions": [
     "storage"

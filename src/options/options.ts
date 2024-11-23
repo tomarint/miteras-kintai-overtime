@@ -1,3 +1,5 @@
+import log from '../utils/logger';
+
 // Saves options to chrome.storage
 function save_options() {
   const estimateOvertime = document.querySelector<HTMLSelectElement>(
@@ -15,7 +17,7 @@ function save_options() {
       // Update status to let user know options were saved.
       const status = document.querySelector<HTMLElement>("#status");
       if (status != null) {
-        console.log(
+        log.info(
           "save estimateOvertime: ",
           estimateOvertime.options[estimateOvertime.selectedIndex].value
         );
@@ -40,7 +42,7 @@ function restore_options() {
         "#estimateOvertimeSelect"
       );
       if (estimateOvertime != null) {
-        console.log("restore estimateOvertime: ", items.estimateOvertime);
+        log.info("restore estimateOvertime: ", items.estimateOvertime);
         estimateOvertime.value = items.estimateOvertime;
       }
     }
@@ -49,3 +51,5 @@ function restore_options() {
 
 document.addEventListener("DOMContentLoaded", restore_options);
 document.querySelector("#save")?.addEventListener("click", save_options);
+
+export {};
