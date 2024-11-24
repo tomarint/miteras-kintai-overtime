@@ -1,4 +1,6 @@
 import log from '../utils/logger';
+import { getOption, Options } from '../utils/settings';
+
 
 function isNumeric(c: string): boolean {
   return "0" <= c && c <= "9";
@@ -204,13 +206,21 @@ function showCumulativeOvertimeHours(estimateOvertime: boolean) {
   });
 }
 
-chrome.storage.sync.get(
-  {
-    estimateOvertime: "1",
-  },
-  function (values) {
-    showCumulativeOvertimeHours(values.estimateOvertime === "1");
-  }
-);
+async function entry() {
+  const OptionEstimateOvertime = await getOption("OptionEstimateOvertime");
+  log.info("OptionEstimateOvertime:", OptionEstimateOvertime);
+  showCumulativeOvertimeHours(OptionEstimateOvertime === "1");
+}
+
+entry();
+
+// chrome.storage.sync.get(
+//   {
+//     estimateOvertime: "1",
+//   },
+//   function (values) {
+//     showCumulativeOvertimeHours(values.estimateOvertime === "1");
+//   }
+// );
 
 export {};

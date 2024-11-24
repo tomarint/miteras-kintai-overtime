@@ -13,3 +13,7 @@
 /* .invisible-text {
   color: transparent;
 } */
+
+div#windows-options {
+  margin-bottom: 100px;
+}

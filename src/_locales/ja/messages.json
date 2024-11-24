@@ -1,10 +1,26 @@
 {
-  "extName": {
+  "strExtensionName": {
     "message": "MiTERAS勤怠残業時間",
     "description": "Extension name"
   },
-  "extDescription": {
+  "strExtensionDescription": {
     "message": "MiTERAS勤怠で累積残業時間を表示します。",
     "description": "Extension description"
+  },
+
+  "strOptionsWinHeader": {
+    "message": "MiTERAS勤怠残業時間 オプション",
+    "description": "The title of the options page"
+  },
+
+  "strOptionEstimateOvertime": {
+    "message": "未入力日の残業時間"
+  },
+  "strOptionEstimateOvertimeDisabled": {
+    "message": "予測しない"
+  },
+  "strOptionEstimateOvertimeEnabled": {
+    "message": "予測する"
   }
+
 }

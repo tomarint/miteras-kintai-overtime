@@ -1,10 +1,26 @@
 {
-  "extName": {
+  "strExtensionName": {
     "message": "MiTERAS KINTAI Overtime",
     "description": "Extension name"
   },
-  "extDescription": {
+  "strExtensionDescription": {
     "message": "This extension shows accumulated overtime hours in MiTERAS KINTAI.",
     "description": "Extension description"
+  },
+
+  "strOptionsWinHeader": {
+    "message": "MiTERAS KINTAI Options",
+    "description": "The title of the options page"
+  },
+
+  "strOptionEstimateOvertime": {
+    "message": "Future overtime hours"
+  },
+  "strOptionEstimateOvertimeDisabled": {
+    "message": "Do not predict"
+  },
+  "strOptionEstimateOvertimeEnabled": {
+    "message": "Predict"
   }
+
 }

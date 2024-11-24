@@ -4,7 +4,7 @@
 <% } else { -%>
   "manifest_version": 3,
 <% } -%>
-  "name": "__MSG_extName__",
+  "name": "__MSG_strExtensionName__",
   "version": "<%= version %>",
 <% if (browser !== 'firefox') { -%>
   "action": {
@@ -15,11 +15,11 @@
       "48": "images/icon48.png",
       "128": "images/icon128.png"
     },
-    "default_title": "__MSG_extName__"
+    "default_title": "__MSG_strExtensionName__"
   },
 <% } -%>
   "default_locale": "en",
-  "description": "__MSG_extDescription__",
+  "description": "__MSG_strExtensionDescription__",
   "icons": {
     "16": "images/icon16.png",
     "24": "images/icon24.png",
